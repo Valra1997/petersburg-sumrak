@@ -1,0 +1,17 @@
+{
+  "PETERSBURG_SUMRAK.SystemTitle": "Петербургский Сумрак",
+  "PETERSBURG_SUMRAK.ActorCharacter": "Персонаж",
+  "PETERSBURG_SUMRAK.ActorMonster": "Монстр",
+  "PETERSBURG_SUMRAK.ActorNPC": "NPC",
+  "PETERSBURG_SUMRAK.AttributeTelo": "Тело",
+  "PETERSBURG_SUMRAK.AttributeRazum": "Разум",
+  "PETERSBURG_SUMRAK.AttributeDusha": "Душа",
+  "PETERSBURG_SUMRAK.AttributeHarizma": "Харизма",
+  "PETERSBURG_SUMRAK.Fear": "Страх",
+  "PETERSBURG_SUMRAK.WoundsLight": "Лёгкие раны",
+  "PETERSBURG_SUMRAK.WoundsHeavy": "Тяжёлые раны",
+  "PETERSBURG_SUMRAK.WoundsCritical": "Критическая",
+  "PETERSBURG_SUMRAK.TabMain": "Главное",
+  "PETERSBURG_SUMRAK.TabInventory": "Снаряжение",
+  "PETERSBURG_SUMRAK.TabNotes": "Заметки"
+}

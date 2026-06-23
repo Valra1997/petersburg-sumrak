@@ -1,0 +1,40 @@
+.petersburg-sumrak.sheet.actor {
+  background: #1a1a1a;
+  color: #d4d4d4;
+  font-family: "Georgia", serif;
+  border: 2px solid #333;
+}
+
+.petersburg-sumrak.sheet.actor .window-content {
+  background: linear-gradient(to bottom, #2a2a2a, #111);
+  color: #e0e0e0;
+}
+
+.petersburg-sumrak.sheet.actor h1, 
+.petersburg-sumrak.sheet.actor h2, 
+.petersburg-sumrak.sheet.actor h3 {
+  color: #8b0000; /* Цвет запекшейся крови и ржавчины */
+  border-bottom: 1px solid #444;
+  font-family: "Times New Roman", serif;
+}
+
+.petersburg-sumrak.sheet.actor input[type="text"],
+.petersburg-sumrak.sheet.actor input[type="number"] {
+  background: #0d0d0d;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 2px;
+}
+
+.petersburg-sumrak.sheet.actor .attribute-box {
+  background: #222;
+  border: 1px solid #444;
+  padding: 5px;
+  text-align: center;
+  margin: 2px;
+}
+
+.petersburg-sumrak.sheet.actor .fear-bar {
+  background: #4a0000;
+  color: #ffcccc;
+}

@@ -1,0 +1,65 @@
+{
+  "Actor": {
+    "types": ["character", "monster", "npc"],
+    "character": {
+      "attributes": {
+        "telo": { "value": 0, "label": "Тело" },
+        "razum": { "value": 0, "label": "Разум" },
+        "dusha": { "value": 0, "label": "Душа" },
+        "harizma": { "value": 0, "label": "Харизма" }
+      },
+      "fear": {
+        "value": 0,
+        "max": 6,
+        "label": "Страх"
+      },
+      "wounds": {
+        "light": { "value": 0, "max": 3, "label": "Лёгкие раны" },
+        "heavy": { "value": 0, "max": 2, "label": "Тяжёлые раны" },
+        "critical": { "value": 0, "max": 1, "label": "Критическая рана" }
+      },
+      "biography": "",
+      "notes": ""
+    },
+    "monster": {
+      "attributes": {
+        "telo": { "value": 0 },
+        "razum": { "value": 0 },
+        "dusha": { "value": 0 }
+      },
+      "rank": 1,
+      "weaknesses": "",
+      "habitat": ""
+    },
+    "npc": {
+      "attributes": {
+        "telo": { "value": 0 },
+        "razum": { "value": 0 },
+        "dusha": { "value": 0 },
+        "harizma": { "value": 0 }
+      },
+      "role": ""
+    }
+  },
+  "Item": {
+    "types": ["move", "gear", "clue", "weakness"],
+    "move": {
+      "description": "",
+      "rollFormula": "",
+      "cost": ""
+    },
+    "gear": {
+      "description": "",
+      "quantity": 1,
+      "damage": ""
+    },
+    "clue": {
+      "description": "",
+      "isDangerous": false
+    },
+    "weakness": {
+      "description": "",
+      "monsterType": ""
+    }
+  }
+}

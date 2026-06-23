@@ -1,0 +1,32 @@
+{
+  "id": "petersburg-sumrak",
+  "title": "Петербургский Сумрак",
+  "description": "Городская мистика, расследования и выживание",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Ваше имя"
+    }
+  ],
+  "esmodules": [
+    "module/petersburg-sumrak.mjs"
+  ],
+  "styles": [
+    "css/petersburg-sumrak.css"
+  ],
+  "languages": [
+    {
+      "lang": "ru",
+      "name": "Русский",
+      "path": "lang/ru.json"
+    }
+  ],
+  "manifest": "https://raw.githubusercontent.com/Valra1997/petersburg-sumrak/main/system.json",
+  "download": "https://github.com/Valra1997/petersburg-sumrak/archive/refs/heads/main.zip",
+  "license": "LICENSE",
+  "readme": "README.md"
+}
