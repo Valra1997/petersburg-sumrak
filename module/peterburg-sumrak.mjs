@@ -2,9 +2,6 @@ import { SumrakActor } from "./actor/sumrak-actor.mjs";
 import { SumrakActorSheet } from "./actor/sumrak-actor-sheet.mjs";
 import { SumrakMonsterSheet } from "./actor/sumrak-monster-sheet.mjs";
 
-/* -------------------------------------------- */
-/*  Инициализация системы                       */
-/* -------------------------------------------- */
 Hooks.once("init", async function() {
   console.log("Петербургский Сумрак | Инициализация системы...");
 
@@ -18,16 +15,17 @@ Hooks.once("init", async function() {
 
   CONFIG.Actor.documentClass = SumrakActor;
   
+  // Отключаем стандартные листы
   Actors.unregisterSheet("core", ActorSheet);
   
-  // Лист персонажа
+  // Лист персонажа (для character и npc)
   Actors.registerSheet("petersburg-sumrak", SumrakActorSheet, {
     types: ["character", "npc"],
     makeDefault: true,
     label: "Лист Персонажа"
   });
 
-  // Лист монстра
+  // Лист монстра (только для monster)
   Actors.registerSheet("petersburg-sumrak", SumrakMonsterSheet, {
     types: ["monster"],
     makeDefault: true,
