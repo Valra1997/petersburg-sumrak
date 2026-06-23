@@ -1,7 +1,7 @@
 import { SumrakActor } from "./actor/sumrak-actor.mjs";
 import { SumrakActorSheet } from "./actor/sumrak-actor-sheet.mjs";
 import { SumrakMonsterSheet } from "./actor/sumrak-monster-sheet.mjs";
-import { ThreatClock } from "./clock/threat-clock.mjs";   // <-- импорт
+import { ThreatClock } from "./clock/threat-clock.mjs";
 
 Hooks.once("init", async function() {
   console.log("Петербургский Сумрак | Инициализация системы...");
@@ -36,21 +36,25 @@ Hooks.once("init", async function() {
   });
 });
 
-// Добавляем кнопку в панель управления
+// Хук для добавления кнопки в панель инструментов
 Hooks.on("renderSceneControls", (app, html) => {
-  const button = document.createElement("button");
-  button.className = "control-tool";
-  button.innerHTML = `<i class="fas fa-clock"></i> Часы`;
-  button.title = "Открыть часы угрозы";
-  button.addEventListener("click", () => {
+  const controlsList = html.querySelector("ol.control-tools");
+  if (!controlsList) {
+    console.warn("Петербургский Сумрак | Не найден список control-tools");
+    return;
+  }
+
+  const li = document.createElement("li");
+  li.className = "control-tool";
+  li.innerHTML = `<i class="fas fa-clock"></i>`;
+  li.title = "Часы угрозы";
+  li.addEventListener("click", () => {
     const clock = new ThreatClock("default");
     clock.render(true);
   });
-  // Вставляем после кнопки "Журнал" или в конец
-  const controls = html.querySelector(".main-controls");
-  if (controls) {
-    controls.appendChild(button);
-  }
+
+  controlsList.appendChild(li);
+  console.log("Петербургский Сумрак | Кнопка часов добавлена");
 });
 
 Hooks.once("ready", async function() {
