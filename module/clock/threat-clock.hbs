@@ -1,0 +1,25 @@
+<div class="clock-container">
+  <div class="clock-header">
+    <h3>Часы угрозы</h3>
+    <span class="clock-info">{{filled}} / {{totalSegments}} заполнено</span>
+  </div>
+
+  <div class="clock-segments">
+    {{#each segments as |filled index|}}
+      <div class="clock-segment {{#if filled}}filled{{/if}}" data-index="{{index}}">
+        <div class="segment-inner"></div>
+      </div>
+    {{/each}}
+  </div>
+
+  <div class="clock-controls">
+    <button class="clock-reset">Сбросить</button>
+    <button class="clock-change-size">Изменить размер</button>
+  </div>
+
+  {{#if isFull}}
+    <div class="clock-alert">
+      ⚠️ ЧАСЫ ПОЛНЫ! Событие активировано!
+    </div>
+  {{/if}}
+</div>
