@@ -1,6 +1,6 @@
-// Импорт наших классов
 import { SumrakActor } from "./actor/sumrak-actor.mjs";
 import { SumrakActorSheet } from "./actor/sumrak-actor-sheet.mjs";
+import { SumrakMonsterSheet } from "./actor/sumrak-monster-sheet.mjs";
 
 /* -------------------------------------------- */
 /*  Инициализация системы                       */
@@ -8,7 +8,6 @@ import { SumrakActorSheet } from "./actor/sumrak-actor-sheet.mjs";
 Hooks.once("init", async function() {
   console.log("Петербургский Сумрак | Инициализация системы...");
 
-  // Регистрируем настройки системы
   game.settings.register("petersburg-sumrak", "systemMigrationVersion", {
     name: "System Migration Version",
     scope: "world",
@@ -17,23 +16,25 @@ Hooks.once("init", async function() {
     default: ""
   });
 
-  // Определяем классы документов
   CONFIG.Actor.documentClass = SumrakActor;
   
-  // Отключаем стандартные листы Foundry, чтобы использовать свои
   Actors.unregisterSheet("core", ActorSheet);
   
-  // Регистрируем наш лист для персонажей
+  // Лист персонажа
   Actors.registerSheet("petersburg-sumrak", SumrakActorSheet, {
-    types: ["character", "monster", "npc"],
+    types: ["character", "npc"],
     makeDefault: true,
-    label: "Лист Сумрака"
+    label: "Лист Персонажа"
+  });
+
+  // Лист монстра
+  Actors.registerSheet("petersburg-sumrak", SumrakMonsterSheet, {
+    types: ["monster"],
+    makeDefault: true,
+    label: "Лист Монстра"
   });
 });
 
-/* -------------------------------------------- */
-/*  Готовность системы                          */
-/* -------------------------------------------- */
 Hooks.once("ready", async function() {
   console.log("Петербургский Сумрак | Город проснулся.");
 });
