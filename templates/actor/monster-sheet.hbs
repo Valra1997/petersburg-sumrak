@@ -1,0 +1,74 @@
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+    <!-- Заголовок -->
+    <header class="sheet-header flexrow">
+        <img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="64" width="64"/>
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{actor.name}}" placeholder="Название монстра"/>
+            </h1>
+            <div class="resource flexrow">
+                <label>Род нечисти</label>
+                <input type="text" name="system.habitat" value="{{system.habitat}}" placeholder="Например: Нежить кровососущая"/>
+            </div>
+            <div class="resource">
+                <label>Ранг угрозы</label>
+                <select name="system.rank">
+                    <option value="1" {{#if (eq system.rank 1)}}selected{{/if}}>1 - Слабая угроза</option>
+                    <option value="2" {{#if (eq system.rank 2)}}selected{{/if}}>2 - Средняя угроза</option>
+                    <option value="3" {{#if (eq system.rank 3)}}selected{{/if}}>3 - Опасная угроза</option>
+                    <option value="4" {{#if (eq system.rank 4)}}selected{{/if}}>Экстра - Катастрофа</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Тело листа -->
+    <section class="sheet-body">
+
+        <!-- Атрибуты и Раны -->
+        <div class="flexrow">
+            <div class="flexcol attributes-grid">
+                <div class="attribute-box">
+                    <label>Тело</label>
+                    <input type="number" name="system.attributes.telo.value" value="{{system.attributes.telo.value}}" data-dtype="Number"/>
+                </div>
+                <div class="attribute-box">
+                    <label>Разум</label>
+                    <input type="number" name="system.attributes.razum.value" value="{{system.attributes.razum.value}}" data-dtype="Number"/>
+                </div>
+                <div class="attribute-box">
+                    <label>Душа</label>
+                    <input type="number" name="system.attributes.dusha.value" value="{{system.attributes.dusha.value}}" data-dtype="Number"/>
+                </div>
+            </div>
+
+            <div class="flexcol wounds-section">
+                <h3>Раны</h3>
+                <label>Лёгкие: <input type="number" name="system.wounds.light.value" value="{{system.wounds.light.value}}" data-dtype="Number"/> / {{system.wounds.light.max}}</label>
+                <label>Тяжёлые: <input type="number" name="system.wounds.heavy.value" value="{{system.wounds.heavy.value}}" data-dtype="Number"/> / {{system.wounds.heavy.max}}</label>
+            </div>
+        </div>
+
+        <!-- Атаки -->
+        <h2>Атаки</h2>
+        <textarea name="system.attacks" rows="3" placeholder="Например: Когти: 1 тяжёлая. Укус: 2 лёгкие + кровопотеря.">{{system.attacks}}</textarea>
+
+        <!-- Особенности -->
+        <h2>Особенности</h2>
+        <textarea name="system.features" rows="4" placeholder="Например: Регенерация 1 лёгкой в ход, кроме серебра. Не входит без приглашения.">{{system.features}}</textarea>
+
+        <!-- Уязвимости -->
+        <h2>Уязвимости</h2>
+        <textarea name="system.weaknesses" rows="3" placeholder="Например: Солнце, осина в сердце, серебро, святая вода.">{{system.weaknesses}}</textarea>
+
+        <!-- Следы присутствия -->
+        <h2>Следы присутствия</h2>
+        <textarea name="system.traces" rows="3" placeholder="Например: Обескровленные животные, ночные звонки, провалы памяти.">{{system.traces}}</textarea>
+
+        <!-- Описание -->
+        <h2>Облик и заметки</h2>
+        {{editor system.biography target="system.biography" button=true owner=owner editable=editable}}
+
+    </section>
+</form>
