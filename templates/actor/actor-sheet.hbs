@@ -67,8 +67,45 @@
                 </div>
             </div>
 
+            <!-- БАЗОВЫЕ ХОДЫ -->
+            <h2>Базовые Ходы</h2>
+            <div class="basic-moves-grid">
+                <button type="button" class="move-btn" data-move="look">
+                    <span class="move-name">Присмотреться</span>
+                    <span class="move-attr">+РАЗУМ</span>
+                </button>
+                <button type="button" class="move-btn" data-move="fear">
+                    <span class="move-name">Сдержать страх</span>
+                    <span class="move-attr">+ДУША</span>
+                </button>
+                <button type="button" class="move-btn" data-move="attack">
+                    <span class="move-name">Нанести удар</span>
+                    <span class="move-attr">+ТЕЛО/РАЗУМ</span>
+                </button>
+                <button type="button" class="move-btn" data-move="weakness">
+                    <span class="move-name">Применить уязвимость</span>
+                    <span class="move-attr">+ТЕЛО/РАЗУМ</span>
+                </button>
+                <button type="button" class="move-btn" data-move="rule">
+                    <span class="move-name">Обойти правило</span>
+                    <span class="move-attr">+ХАРИЗМА/РАЗУМ</span>
+                </button>
+                <button type="button" class="move-btn" data-move="help">
+                    <span class="move-name">Помочь союзнику</span>
+                    <span class="move-attr">+ХАРИЗМА/ТЕЛО</span>
+                </button>
+                <button type="button" class="move-btn" data-move="retreat">
+                    <span class="move-name">Отступить</span>
+                    <span class="move-attr">+ТЕЛО/РАЗУМ</span>
+                </button>
+                <button type="button" class="move-btn" data-move="ritual">
+                    <span class="move-name">Провести ритуал</span>
+                    <span class="move-attr">+ДУША</span>
+                </button>
+            </div>
+
             <!-- Ходы и Способности (Список предметов типа 'move') -->
-            <h2>Ходы и Способности</h2>
+            <h2>Ходы и Способности Класса</h2>
             <ol class="items-list">
                 {{#each actor.items as |item id|}}
                     {{#if (eq item.type "move")}}
@@ -82,25 +119,6 @@
                     {{/if}}
                 {{/each}}
             </ol>
-        </div>
-
-        <!-- Вкладка Снаряжение -->
-        <div class="tab inventory" data-group="primary" data-tab="inventory">
-            <h2>Снаряжение и Улики</h2>
-            <ol class="items-list">
-                {{#each actor.items as |item id|}}
-                    {{#if (or (eq item.type "gear") (eq item.type "clue"))}}
-                    <li class="item flexrow" data-item-id="{{item._id}}">
-                        <h4 class="item-name">{{item.name}}</h4>
-                        <div class="item-controls">
-                            <a class="item-control item-edit" title="Редактировать"><i class="fas fa-edit"></i></a>
-                            <a class="item-control item-delete" title="Удалить"><i class="fas fa-trash"></i></a>
-                        </div>
-                    </li>
-                    {{/if}}
-                {{/each}}
-            </ol>
-        </div>
 
         <!-- Вкладка Заметки -->
         <div class="tab notes" data-group="primary" data-tab="notes">
