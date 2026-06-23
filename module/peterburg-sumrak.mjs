@@ -36,14 +36,14 @@ Hooks.once("init", async function() {
   });
 });
 
-// ПРАВИЛЬНЫЙ СПОСОБ: добавляем кнопку в панель инструментов сцены
-Hooks.on("getSceneControlButtons", (controls) => {
-  // Добавляем новую группу кнопок
-  controls.push({
+// Добавляем кнопку через game.controls.register
+Hooks.once("setup", () => {
+  game.controls.register("petersburg-sumrak", "threat-clock", {
     name: "threat-clock",
     title: "Часы угрозы",
     icon: "fas fa-clock",
     layer: "controls",
+    visible: true,
     tools: [
       {
         name: "open-clock",
