@@ -119,3 +119,31 @@
 .sumrak-move-card.success .move-result { border-color: #2e7d32; color: #a5d6a7; }
 .sumrak-move-card.partial .move-result { border-color: #f57f17; color: #fff59d; }
 .sumrak-move-card.fail .move-result { border-color: #c62828; color: #ef9a9a; }
+
+/* Стили для листа монстра */
+.petersburg-sumrak.sheet.actor.monster .window-content {
+  background: linear-gradient(to bottom, #1a0a0a, #0a0a0a);
+}
+
+.petersburg-sumrak.sheet.actor.monster h1,
+.petersburg-sumrak.sheet.actor.monster h2,
+.petersburg-sumrak.sheet.actor.monster h3 {
+  color: #c62828;
+  border-bottom: 1px solid #555;
+}
+
+.petersburg-sumrak.sheet.actor.monster textarea {
+  background: #0d0d0d;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  padding: 5px;
+  font-family: "Georgia", serif;
+  resize: vertical;
+}
+
+.petersburg-sumrak.sheet.actor.monster .wounds-section {
+  background: #2a1a1a;
+  border: 1px solid #555;
+  padding: 10px;
+  margin-left: 10px;
+}
