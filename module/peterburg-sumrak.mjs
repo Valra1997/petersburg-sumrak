@@ -6,6 +6,7 @@ import { ThreatClock } from "./clock/threat-clock.mjs";
 Hooks.once("init", async function() {
   console.log("Петербургский Сумрак | Инициализация системы...");
 
+  // Регистрируем настройки для хранения состояния часов
   game.settings.register("petersburg-sumrak", "threatClock.default.segments", {
     scope: "world",
     config: false,
@@ -35,25 +36,25 @@ Hooks.once("init", async function() {
   });
 });
 
-Hooks.on("renderSceneControls", (app, html) => {
-  const controlsContainer = html.find('#controls ol, #controls ul').first();
-  if (!controlsContainer.length) {
-    console.warn("Петербургский Сумрак | Не найден контейнер control-tools");
-    return;
-  }
-  if (controlsContainer.find('.clock-tool').length) return;
-
-  const li = document.createElement("li");
-  li.className = "control-tool clock-tool";
-  li.innerHTML = `<i class="fas fa-clock"></i>`;
-  li.title = "Часы угрозы";
-  li.addEventListener("click", () => {
-    const clock = new ThreatClock("default");
-    clock.render(true);
+// ПРАВИЛЬНЫЙ СПОСОБ: добавляем кнопку в панель инструментов сцены
+Hooks.on("getSceneControlButtons", (controls) => {
+  // Добавляем новую группу кнопок
+  controls.push({
+    name: "threat-clock",
+    title: "Часы угрозы",
+    icon: "fas fa-clock",
+    layer: "controls",
+    tools: [
+      {
+        name: "open-clock",
+        title: "Открыть часы угрозы",
+        icon: "fas fa-clock",
+        onClick: () => {
+          new ThreatClock("default").render(true);
+        }
+      }
+    ]
   });
-
-  controlsContainer[0].appendChild(li);
-  console.log("Петербургский Сумрак | Кнопка часов добавлена");
 });
 
 Hooks.once("ready", async function() {
