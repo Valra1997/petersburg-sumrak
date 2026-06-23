@@ -36,38 +36,24 @@ Hooks.once("init", async function() {
   });
 });
 
-// Добавляем кнопку в верхнюю панель навигации
-Hooks.on("renderNavigation", (app, html) => {
-  // Ищем контейнер для кнопок навигации
-  const nav = html.find('#navigation .main-controls, #navigation .controls, nav.main-controls');
-  
-  // Если не нашли, пробуем другие селекторы
-  let container = nav.length ? nav : html.find('.main-controls');
-  
-  if (!container.length) {
-    console.warn("Петербургский Сумрак | Не найден контейнер для кнопки");
-    return;
-  }
+// === НАДЁЖНОЕ ДОБАВЛЕНИЕ КНОПКИ ===
+// Используем официальный хук для добавления кнопок в верхнюю панель навигации
+Hooks.on("getApplicationV1HeaderButtons", (app, buttons) => {
+  // Проверяем, что это окно навигации
+  if (app.constructor.name !== "Navigation") return;
 
-  // Проверяем, что кнопка уже не добавлена
-  if (container.find('.clock-nav-button').length) return;
+  // Проверяем, что кнопка ещё не добавлена
+  if (buttons.find(b => b.class === "threat-clock-btn")) return;
 
-  // Создаём кнопку
-  const button = $(`
-    <li class="nav-item clock-nav-button" style="margin-left: 4px; display: inline-block;">
-      <a class="nav-item" title="Часы угрозы" style="cursor: pointer; padding: 4px 8px; color: #ccc;">
-        <i class="fas fa-clock"></i> <span style="font-size: 0.8em;">Часы</span>
-      </a>
-    </li>
-  `);
-
-  // Обработчик клика
-  button.on('click', () => {
-    new ThreatClock("default").render(true);
+  // Добавляем нашу кнопку в массив
+  buttons.push({
+    class: "threat-clock-btn",
+    icon: "fas fa-clock",
+    label: "Часы",
+    onclick: () => {
+      new ThreatClock("default").render(true);
+    }
   });
-
-  container.append(button);
-  console.log("Петербургский Сумрак | Кнопка часов добавлена в навигацию");
 });
 
 Hooks.once("ready", async function() {
