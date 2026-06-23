@@ -80,3 +80,42 @@
     color: #888;
     margin-top: 2px;
 }
+/* Стили для карточек ходов в чате */
+.sumrak-move-card {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 4px;
+    font-family: "Georgia", serif;
+    color: #e0e0e0;
+}
+
+.sumrak-move-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #555;
+    padding-bottom: 5px;
+    color: #d4d4d4;
+}
+
+.sumrak-move-card .attr-label {
+    font-size: 0.8em;
+    color: #888;
+    font-weight: normal;
+}
+
+.sumrak-move-card .roll-formula {
+    font-size: 1.2em;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.sumrak-move-card .move-result {
+    padding: 8px;
+    border-left: 4px solid;
+    margin-top: 10px;
+    background: #222;
+}
+
+.sumrak-move-card.success .move-result { border-color: #2e7d32; color: #a5d6a7; }
+.sumrak-move-card.partial .move-result { border-color: #f57f17; color: #fff59d; }
+.sumrak-move-card.fail .move-result { border-color: #c62828; color: #ef9a9a; }
