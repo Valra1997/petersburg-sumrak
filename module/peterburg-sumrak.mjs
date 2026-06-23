@@ -6,7 +6,6 @@ import { ThreatClock } from "./clock/threat-clock.mjs";
 Hooks.once("init", async function() {
   console.log("Петербургский Сумрак | Инициализация системы...");
 
-  // Регистрируем настройки для хранения состояния часов
   game.settings.register("petersburg-sumrak", "threatClock.default.segments", {
     scope: "world",
     config: false,
@@ -36,16 +35,16 @@ Hooks.once("init", async function() {
   });
 });
 
-// Хук для добавления кнопки в панель инструментов
 Hooks.on("renderSceneControls", (app, html) => {
-  const controlsList = html.querySelector("ol.control-tools");
-  if (!controlsList) {
-    console.warn("Петербургский Сумрак | Не найден список control-tools");
+  const controlsContainer = html.find('#controls ol, #controls ul').first();
+  if (!controlsContainer.length) {
+    console.warn("Петербургский Сумрак | Не найден контейнер control-tools");
     return;
   }
+  if (controlsContainer.find('.clock-tool').length) return;
 
   const li = document.createElement("li");
-  li.className = "control-tool";
+  li.className = "control-tool clock-tool";
   li.innerHTML = `<i class="fas fa-clock"></i>`;
   li.title = "Часы угрозы";
   li.addEventListener("click", () => {
@@ -53,7 +52,7 @@ Hooks.on("renderSceneControls", (app, html) => {
     clock.render(true);
   });
 
-  controlsList.appendChild(li);
+  controlsContainer[0].appendChild(li);
   console.log("Петербургский Сумрак | Кнопка часов добавлена");
 });
 
