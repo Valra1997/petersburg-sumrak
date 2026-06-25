@@ -58,10 +58,13 @@
       "cost": ""
     },
     "gear": {
-      "description": "",
-      "quantity": 1,
-      "damage": ""
-    },
+  "description": "",
+  "quantity": 1,
+  "damage": "",
+  "type": "tool",
+  "effects": "",
+  "weight": 0
+},
     "clue": {
       "description": "",
       "isDangerous": false
