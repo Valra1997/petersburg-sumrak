@@ -20,7 +20,7 @@ const BASIC_MOVES_DATA = {
     },
     attack: {
         name: "Нанести удар",
-        attr: "telo", // По умолчанию Тело, для стрельбы можно доработать
+        attr: "telo",
         attrLabel: "ТЕЛО",
         text10: "Нанесите урон и выберите эффект (оттеснить, сбить, выбить предмет).",
         text7: "Нанесите урон, но враг контратакует.",
@@ -97,37 +97,38 @@ export class SumrakActorSheet extends ActorSheet {
     super.activateListeners(html);
     if (!this.isEditable) return;
 
-    // Броски атрибутов (старые)
+    // Броски атрибутов
     html.find('.attribute-roll').click(this._onAttributeRoll.bind(this));
     
-    // Броски базовых ходов (новые!)
+    // Броски базовых ходов
     html.find('.move-btn').click(this._onMoveRoll.bind(this));
+    
+    // --- Инвентарь ---
+    html.find('.add-item-btn').click(this._onAddItem.bind(this));
+    html.find('.item-use').click(this._onUseItem.bind(this));
+    html.find('.item-edit').click(this._onEditItem.bind(this));
+    html.find('.item-delete').click(this._onDeleteItem.bind(this));
   }
 
-  /**
-   * Обработчик броска Базового Хода
-   */
+  // ==================== БАЗОВЫЕ ХОДЫ ====================
+
   async _onMoveRoll(event) {
     event.preventDefault();
     const element = event.currentTarget;
     const moveKey = element.dataset.move;
     const moveData = BASIC_MOVES_DATA[moveKey];
-    
     if (!moveData) return;
 
     const actorData = this.actor.system;
-    // Берем значение атрибута (если их два, как в Нанести удар, берем первый для простоты, или можно сделать диалог)
     const attributeValue = actorData.attributes[moveData.attr]?.value || 0;
-    
-    // Бросок 2d6 + атрибут
+
     const roll = new Roll(`2d6 + @val`, { val: attributeValue });
     await roll.evaluate({ async: true });
-    
+
     const total = roll.total;
     let outcomeHtml = "";
     let outcomeClass = "";
 
-    // Логика PbtA
     if (total >= 10) {
         outcomeHtml = `<div class="move-result success-full"><strong>10+ Полный успех:</strong><br>${moveData.text10}</div>`;
         outcomeClass = "success";
@@ -139,7 +140,6 @@ export class SumrakActorSheet extends ActorSheet {
         outcomeClass = "fail";
     }
 
-    // Формируем красивое сообщение в чат
     const chatContent = `
         <div class="sumrak-move-card ${outcomeClass}">
             <h3>${moveData.name} <span class="attr-label">(+${moveData.attrLabel}: ${attributeValue})</span></h3>
@@ -156,9 +156,6 @@ export class SumrakActorSheet extends ActorSheet {
     });
   }
 
-  /**
-   * Обработчик броска атрибута (без хода)
-   */
   async _onAttributeRoll(event) {
     event.preventDefault();
     const element = event.currentTarget;
@@ -176,5 +173,174 @@ export class SumrakActorSheet extends ActorSheet {
       roll: roll,
       type: CONST.CHAT_MESSAGE_STYLES.ROLL
     });
+  }
+
+  // ==================== ИНВЕНТАРЬ ====================
+
+  /**
+   * Добавить новый предмет
+   */
+  async _onAddItem(event) {
+    event.preventDefault();
+
+    const content = `
+      <form>
+        <div class="form-group">
+          <label>Название предмета</label>
+          <input type="text" id="item-name" placeholder="Например: Серебряный крест"/>
+        </div>
+        <div class="form-group">
+          <label>Тип предмета</label>
+          <select id="item-type">
+            <option value="tool">Инструмент</option>
+            <option value="weapon">Оружие</option>
+            <option value="consumable">Расходник</option>
+            <option value="armor">Броня</option>
+            <option value="clue">Улика</option>
+            <option value="special">Особое</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Количество</label>
+          <input type="number" id="item-quantity" value="1" min="1"/>
+        </div>
+        <div class="form-group">
+          <label>Урон (если оружие)</label>
+          <input type="text" id="item-damage" placeholder="Например: 1 лёгкая"/>
+        </div>
+        <div class="form-group">
+          <label>Описание</label>
+          <textarea id="item-description" rows="2" placeholder="Что это и для чего"></textarea>
+        </div>
+      </form>
+    `;
+
+    new Dialog({
+      title: "Добавить предмет",
+      content: content,
+      buttons: {
+        confirm: {
+          label: "Создать",
+          callback: async (html) => {
+            const name = html.find('#item-name').val();
+            const type = html.find('#item-type').val();
+            const quantity = parseInt(html.find('#item-quantity').val(), 10) || 1;
+            const damage = html.find('#item-damage').val() || "";
+            const description = html.find('#item-description').val() || "";
+
+            if (!name) {
+              ui.notifications.warn("Название предмета обязательно");
+              return;
+            }
+
+            await this.actor.createEmbeddedDocuments("Item", [{
+              name: name,
+              type: "gear",
+              system: {
+                description: description,
+                quantity: quantity,
+                damage: damage,
+                type: type,
+                effects: "",
+                weight: 0
+              }
+            }]);
+
+            ui.notifications.info(`Предмет "${name}" добавлен`);
+          }
+        },
+        cancel: {
+          label: "Отмена"
+        }
+      }
+    }).render(true);
+  }
+
+  /**
+   * Использовать предмет
+   */
+  async _onUseItem(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest('.inventory-item').dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item) return;
+
+    const itemData = item.system;
+    const itemName = item.name;
+
+    let chatContent = `
+      <div class="item-use-card">
+        <h3>🛠️ Использование: ${itemName}</h3>
+        <div class="item-description">${itemData.description || "Нет описания"}</div>
+    `;
+
+    // Если оружие с уроном
+    if (itemData.type === "weapon" && itemData.damage) {
+      const damageRoll = itemData.damage;
+      if (damageRoll.match(/\d+d\d+/)) {
+        const roll = new Roll(damageRoll);
+        await roll.evaluate({ async: true });
+        chatContent += `
+          <div class="damage-roll">🎲 Урон: ${roll.formula} = <strong>${roll.total}</strong></div>
+        `;
+      } else {
+        chatContent += `
+          <div class="damage-text">⚔️ Урон: ${damageRoll}</div>
+        `;
+      }
+    }
+
+    // Если расходник — уменьшаем количество
+    if (itemData.type === "consumable") {
+      const newQuantity = itemData.quantity - 1;
+      if (newQuantity <= 0) {
+        await item.delete();
+        chatContent += `<div class="item-consumed">💫 Предмет использован и исчез</div>`;
+      } else {
+        await item.update({ "system.quantity": newQuantity });
+        chatContent += `<div class="item-consumed">💫 Осталось: ${newQuantity}</div>`;
+      }
+    }
+
+    chatContent += `</div>`;
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      content: chatContent,
+      type: CONST.CHAT_MESSAGE_STYLES.OTHER
+    });
+  }
+
+  /**
+   * Редактировать предмет (показывает стандартное окно редактирования)
+   */
+  async _onEditItem(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest('.inventory-item').dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (item) item.sheet.render(true);
+  }
+
+  /**
+   * Удалить предмет
+   */
+  async _onDeleteItem(event) {
+    event.preventDefault();
+    const itemId = event.currentTarget.closest('.inventory-item').dataset.itemId;
+    const item = this.actor.items.get(itemId);
+    if (!item) return;
+
+    const confirmed = await Dialog.confirm({
+      title: "Удалить предмет?",
+      content: `<p>Вы уверены, что хотите удалить <strong>${item.name}</strong>?</p>`,
+      yes: () => true,
+      no: () => false,
+      defaultYes: false
+    });
+
+    if (confirmed) {
+      await item.delete();
+      ui.notifications.info(`Предмет "${item.name}" удалён`);
+    }
   }
 }
